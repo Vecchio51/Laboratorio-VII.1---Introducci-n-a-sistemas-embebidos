@@ -7,6 +7,7 @@
 #include <ESPmDNS.h>
 #include "html.h"
 #include "sensores.h"
+#include "pantalla.h"
 
 const char* DeviceName = "motor-ca"; // Acceso vía http://motor-ca.local
 const char* ssid       = "Tu_WiFi";
@@ -41,6 +42,7 @@ void setup() {
   digitalWrite(PIN_RELE, RELE_APAGADO); // Seguridad: arranca apagado
 
   iniciarSensores();
+  iniciarPantalla();
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -94,4 +96,5 @@ void loop() {
 
   // 3. Atender peticiones de la página web
   server.handleClient();
+  actualizarPantalla(WiFi.localIP().toString(), rpmActual, temperaturaActual, motorEncendido, interbloqueoOk);
 }
